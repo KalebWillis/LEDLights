@@ -29,18 +29,9 @@ void setup() {
 
 void loop() {
  
-  //colorRunForwards(strip.Color(0, 0, 0, 255),0 ,60, 20, 1);
-  //colorRunBackwards(strip.Color(0, 0, 0, 255),60 ,0, 20, 1);
-  //colorRunOverColor(strip.Color(0, 0, 0, 255), strip.Color(0, 255, 0, 0), 5, 20, 1);
-  //fade(strip.Color(  0,   0,   0, 255), 5, 5);
-  
-  randomFade(5, 2, 1);
-  delay(3000);
-  randomFade(5, 2, 2);
-  delay(3000);
-  randomFade(5, 2, 3);
-  delay(3000);
-  //deskLight(strip.Color(  0,   0,   0, 255));
+
+
+
 
 }
 //////////////////////////////// Working //////////////////////////////////////////////////
@@ -64,6 +55,8 @@ void fade(uint32_t color, int wait, int cycles) {
   }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 //////////////////////////////// Working //////////////////////////////////////////////////
 void randomFade(int wait, int cycles, int colorSpectrum) {
@@ -97,8 +90,6 @@ void randomFade(int wait, int cycles, int colorSpectrum) {
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-
-
 //////////////////////////////// Working //////////////////////////////////////////////////
 void deskLight(int color) {
   for(int i=0; i<30; i++) { // For each pixel in strip...
@@ -108,6 +99,113 @@ void deskLight(int color) {
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
+
+
+//////////////////////////////// Working //////////////////////////////////////////////////
+void colorRunForwards(uint32_t color, int pixelStart, int pixelEnd, int wait, int cycles) {
+  strip.setBrightness(BRIGHTNESS);
+  for(int j = 0; j < cycles; j++){
+    for(int i= pixelStart; i<= pixelEnd; i++) { // For each pixel in strip...
+      strip.setPixelColor(i, color);         //  Set pixel's color (in RAM)
+      strip.show();                          //  Update strip to match
+      strip.setPixelColor(i-1, strip.Color(0, 0, 0, 0));
+      strip.show();
+      delay(wait);                           //  Pause for a moment
+    }
+  }
+}
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//////////////////////////////// Working //////////////////////////////////////////////////
+void colorRunBackwards(uint32_t color, int pixelStart, int pixelEnd, int wait, int cycles) {
+  strip.setBrightness(BRIGHTNESS);
+  for(int j = 0; j < cycles; j++){
+    for(int i= pixelStart; i>= pixelEnd; i--) { // For each pixel in strip...
+      strip.setPixelColor(i, color);         //  Set pixel's color (in RAM)
+      strip.show();                          //  Update strip to match
+      strip.setPixelColor(i+1, strip.Color(0, 0, 0, 0));
+      strip.show();
+      delay(wait);                           //  Pause for a moment
+    }
+  }
+}
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//////////////////////////////// Working //////////////////////////////////////////////////
+void colorRunOverColor(uint32_t color, uint32_t bgColor, int runSize ,int wait, int cycles) {
+  strip.setBrightness(BRIGHTNESS);
+  strip.fill(bgColor, 0, 60);
+  for(int j = 0; j < cycles; j++){
+    for(int i= 0; i<= LED_COUNT+runSize; i++) { // For each pixel in strip...
+      strip.setPixelColor(i, color);         //  Set pixel's color (in RAM)
+      strip.show();                          //  Update strip to match
+      strip.setPixelColor(i-runSize, bgColor);
+      strip.show();
+      delay(wait);                           //  Pause for a moment
+    }
+  }
+}
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//////////////////////////////// Working //////////////////////////////////////////////////
+uint32_t randomColor(bool white) {
+  int r = random(200,256);
+  int g = random(0,256);
+  int b = random(0,256);
+  if(white==true){
+    int w = random(0,128);
+    uint32_t color = strip.Color(r, g, b, w);
+    return color;
+  }if(white==false){ 
+    uint32_t color = strip.Color(r, g, b, 0);
+    return color;
+  }
+}
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//////////////////////////////// Working //////////////////////////////////////////////////
+uint32_t randomColorSpectrum(int spectrum) {
+  if(spectrum == 1){ //red spectrum
+    int r = random(50,256);
+    int g = random(0,100);
+    int b = random(0,100);
+    uint32_t color = strip.Color(r, g, b, 0);
+    return color;
+  }else if(spectrum == 2){ //green spectrum
+    int r = random(0,100);
+    int g = random(50,256);
+    int b = random(0,100);
+    uint32_t color = strip.Color(r, g, b, 0);
+    return color;
+  }else if(spectrum == 3){ //blue spectrum
+    int r = random(0,100);
+    int g = random(0,100);
+    int b = random(50,256);
+    uint32_t color = strip.Color(r, g, b, 0);
+    return color;
+  }
+}
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////// Adafruit Test Code //////////////////////////////////////////////////
 void whiteOverRainbow(int whiteSpeed, int whiteLength) {
 
   if(whiteLength >= strip.numPixels()) whiteLength = strip.numPixels() - 1;
@@ -220,93 +318,4 @@ void rainbowFade2White(int wait, int rainbowLoops, int whiteLoops) {
 // (as a single 'packed' 32-bit value, which you can get by calling
 // strip.Color(red, green, blue) as shown in the loop() function above),
 // and a delay time (in milliseconds) between pixels.
-//////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-//////////////////////////////// Working //////////////////////////////////////////////////
-void colorRunForwards(uint32_t color, int pixelStart, int pixelEnd, int wait, int cycles) {
-  strip.setBrightness(BRIGHTNESS);
-  for(int j = 0; j < cycles; j++){
-    for(int i= pixelStart; i<= pixelEnd; i++) { // For each pixel in strip...
-      strip.setPixelColor(i, color);         //  Set pixel's color (in RAM)
-      strip.show();                          //  Update strip to match
-      strip.setPixelColor(i-1, strip.Color(0, 0, 0, 0));
-      strip.show();
-      delay(wait);                           //  Pause for a moment
-    }
-  }
-}
-//////////////////////////////////////////////////////////////////////////////////////////
-
-//////////////////////////////// Working //////////////////////////////////////////////////
-void colorRunBackwards(uint32_t color, int pixelStart, int pixelEnd, int wait, int cycles) {
-  strip.setBrightness(BRIGHTNESS);
-  for(int j = 0; j < cycles; j++){
-    for(int i= pixelStart; i>= pixelEnd; i--) { // For each pixel in strip...
-      strip.setPixelColor(i, color);         //  Set pixel's color (in RAM)
-      strip.show();                          //  Update strip to match
-      strip.setPixelColor(i+1, strip.Color(0, 0, 0, 0));
-      strip.show();
-      delay(wait);                           //  Pause for a moment
-    }
-  }
-}
-//////////////////////////////////////////////////////////////////////////////////////////
-
-//////////////////////////////// Working //////////////////////////////////////////////////
-void colorRunOverColor(uint32_t color, uint32_t bgColor, int runSize ,int wait, int cycles) {
-  strip.setBrightness(BRIGHTNESS);
-  strip.fill(bgColor, 0, 60);
-  for(int j = 0; j < cycles; j++){
-    for(int i= 0; i<= LED_COUNT+runSize; i++) { // For each pixel in strip...
-      strip.setPixelColor(i, color);         //  Set pixel's color (in RAM)
-      strip.show();                          //  Update strip to match
-      strip.setPixelColor(i-runSize, bgColor);
-      strip.show();
-      delay(wait);                           //  Pause for a moment
-    }
-  }
-}
-//////////////////////////////////////////////////////////////////////////////////////////
-
-
-//////////////////////////////// Working //////////////////////////////////////////////////
-uint32_t randomColor(bool white) {
-  int r = random(200,256);
-  int g = random(0,256);
-  int b = random(0,256);
-  if(white==true){
-    int w = random(0,128);
-    uint32_t color = strip.Color(r, g, b, w);
-    return color;
-  }if(white==false){ 
-    uint32_t color = strip.Color(r, g, b, 0);
-    return color;
-  }
-}
-//////////////////////////////////////////////////////////////////////////////////////////
-
-//////////////////////////////// Working //////////////////////////////////////////////////
-uint32_t randomColorSpectrum(int spectrum) {
-  if(spectrum == 1){ //red spectrum
-    int r = random(50,256);
-    int g = random(0,100);
-    int b = random(0,100);
-    uint32_t color = strip.Color(r, g, b, 0);
-    return color;
-  }else if(spectrum == 2){ //green spectrum
-    int r = random(0,100);
-    int g = random(50,256);
-    int b = random(0,100);
-    uint32_t color = strip.Color(r, g, b, 0);
-    return color;
-  }else if(spectrum == 3){ //blue spectrum
-    int r = random(0,100);
-    int g = random(0,100);
-    int b = random(50,256);
-    uint32_t color = strip.Color(r, g, b, 0);
-    return color;
-  }
-}
 //////////////////////////////////////////////////////////////////////////////////////////
