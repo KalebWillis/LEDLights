@@ -29,8 +29,20 @@ void setup() {
 
 void loop() {
  
+ for(int i=0; i<=10; i++){
+  colorRunOverColor(strip.gamma32(strip.Color(randomBit(), randomBit(), randomBit(), 0)), strip.gamma32(strip.Color(randomBit(), randomBit(), randomBit(), 0)), 5, 40, 1);
+ }
+  randomFade(5, 4, 1);
 
+  randomFade(5, 4, 2);
 
+  randomFade(5, 4, 3);
+
+  for(int i=0; i<=10; i++){
+  colorRunForward(strip.Color(255, 0, 0, 0), 31, 60, 5, 1);
+  colorRunBackward(strip.Color(255, 0, 0, 0), 30, 0, 5, 1);
+  cylon(strip.Color(255, 0, 0, 0), 20, 5);
+ }
 
 
 }
@@ -102,7 +114,7 @@ void deskLight(int color) {
 
 
 //////////////////////////////// Working //////////////////////////////////////////////////
-void colorRunForwards(uint32_t color, int pixelStart, int pixelEnd, int wait, int cycles) {
+void colorRunForward(uint32_t color, int pixelStart, int pixelEnd, int wait, int cycles) {
   strip.setBrightness(BRIGHTNESS);
   for(int j = 0; j < cycles; j++){
     for(int i= pixelStart; i<= pixelEnd; i++) { // For each pixel in strip...
@@ -119,7 +131,7 @@ void colorRunForwards(uint32_t color, int pixelStart, int pixelEnd, int wait, in
 
 
 //////////////////////////////// Working //////////////////////////////////////////////////
-void colorRunBackwards(uint32_t color, int pixelStart, int pixelEnd, int wait, int cycles) {
+void colorRunBackward(uint32_t color, int pixelStart, int pixelEnd, int wait, int cycles) {
   strip.setBrightness(BRIGHTNESS);
   for(int j = 0; j < cycles; j++){
     for(int i= pixelStart; i>= pixelEnd; i--) { // For each pixel in strip...
@@ -154,16 +166,46 @@ void colorRunOverColor(uint32_t color, uint32_t bgColor, int runSize ,int wait, 
 
 
 //////////////////////////////// Working //////////////////////////////////////////////////
+void cylon(uint32_t color, int wait, int cycles) {
+  strip.setBrightness(BRIGHTNESS);
+  for(int j = 0; j < cycles; j++){
+    for(int i= 0; i<= 30; i++) { // For each pixel in strip...
+      int top = 30+i;
+      int bottom = 30-i;
+      strip.setPixelColor(30-i, color);         
+      strip.setPixelColor(30+i, color);                          
+      strip.setPixelColor(top-1, strip.Color(0, 0, 0, 0));
+      strip.setPixelColor(bottom+1, strip.Color(0, 0, 0, 0));
+      strip.show();
+      delay(wait);                           
+    }
+    for(int i= 0; i<= 30; i++) { // For each pixel in strip...
+      int top = 60-i;
+      int bottom = 0+i;
+      strip.setPixelColor(60-i, color);         
+      strip.setPixelColor(0+i, color);                          
+      strip.setPixelColor(top+1, strip.Color(0, 0, 0, 0));
+      strip.setPixelColor(bottom-1, strip.Color(0, 0, 0, 0));
+      strip.show();
+      delay(wait);                           
+    }
+  }
+}
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//////////////////////////////// Working //////////////////////////////////////////////////
 uint32_t randomColor(bool white) {
   int r = random(200,256);
   int g = random(0,256);
   int b = random(0,256);
   if(white==true){
     int w = random(0,128);
-    uint32_t color = strip.Color(r, g, b, w);
+    uint32_t color = strip.gamma32(strip.Color(r, g, b, w));
     return color;
   }if(white==false){ 
-    uint32_t color = strip.Color(r, g, b, 0);
+    uint32_t color = strip.gamma32(strip.Color(r, g, b, 0));
     return color;
   }
 }
@@ -177,25 +219,33 @@ uint32_t randomColorSpectrum(int spectrum) {
     int r = random(50,256);
     int g = random(0,100);
     int b = random(0,100);
-    uint32_t color = strip.Color(r, g, b, 0);
+    uint32_t color = strip.gamma32(strip.Color(r, g, b, 0));
     return color;
   }else if(spectrum == 2){ //green spectrum
     int r = random(0,100);
     int g = random(50,256);
     int b = random(0,100);
-    uint32_t color = strip.Color(r, g, b, 0);
+    uint32_t color = strip.gamma32(strip.Color(r, g, b, 0));
     return color;
   }else if(spectrum == 3){ //blue spectrum
     int r = random(0,100);
     int g = random(0,100);
     int b = random(50,256);
-    uint32_t color = strip.Color(r, g, b, 0);
+    uint32_t color = strip.gamma32(strip.Color(r, g, b, 0));
     return color;
   }
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
 
+
+//////////////////////////////// Working //////////////////////////////////////////////////
+int randomBit(){
+  int color = random(0,256);
+  
+  return color;
+}
+///////////////////////////////////////////////////////////////////////////////////////////
 
 
 
